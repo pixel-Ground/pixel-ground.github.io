@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#04070d" />
+  <title>PIXGROUND — Digital Products, Built With Depth</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<canvas id="pointerParticles" class="pointer-particles" aria-hidden="true"></canvas>
+<header class="site-header" id="header">
+  <a class="brand" href="#top">PIXGROUND</a>
+  <nav class="desktop-nav" aria-label="주요 메뉴"><a href="#work">WORK</a><a href="#capabilities">CAPABILITIES</a><a href="#studio">STUDIO</a><a href="#contact">CONTACT</a></nav>
+  <button class="mobile-menu-button" id="menuButton" type="button" aria-expanded="false">MENU</button>
+  <nav class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴"><a href="#work">WORK</a><a href="#capabilities">CAPABILITIES</a><a href="#studio">STUDIO</a><a href="#contact">CONTACT</a></nav>
+</header>
+<main id="top">
+<section class="hero section-dark">
+  <div class="hero__inner content-shell">
+    <div class="hero__copy">
+      <p class="eyebrow">WEB · APP · PLATFORM · SAAS</p>
+      <h1>DIGITAL PRODUCTS,<br><em>BUILT WITH DEPTH.</em></h1>
+      <p class="hero__lead">픽스그라운드는 아이디어를 화면으로만 만드는 것이 아니라, 사용자 흐름과 시스템 구조를 함께 설계해 실제로 운영 가능한 제품으로 완성합니다.</p>
+      <div class="hero__actions"><a href="#work" class="text-link">VIEW SELECTED WORK <span>↗</span></a><a href="#contact" class="quiet-link">프로젝트 상담 <span>↗</span></a></div>
+    </div>
+    <div class="core-visual" aria-hidden="true">
+      <div class="core-depth core-depth--outer"></div><div class="core-depth core-depth--inner"></div>
+      <svg class="core-scene" viewBox="0 0 520 520">
+        <defs><filter id="coreGlow" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="18" result="blur"/><feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.09 0 0 0 0 0.42 0 0 0 0 1 0 0 0 .48 0"/></filter><g id="cube"><polygon points="50,2 96,27 50,52 4,27" fill="#2f7dff"/><polygon points="4,27 50,52 50,98 4,73" fill="#123c9b"/><polygon points="96,27 50,52 50,98 96,73" fill="#071c54"/></g></defs>
+        <circle cx="265" cy="265" r="135" fill="#176bff" opacity=".12" filter="url(#coreGlow)"/>
+        <g transform="translate(210 175) scale(1.08)"><use href="#cube"/></g><g transform="translate(145 250) scale(.82)"><use href="#cube"/></g><g transform="translate(278 252) scale(.82)"><use href="#cube"/></g><g transform="translate(215 320) scale(.8)"><use href="#cube"/></g><g class="cube--seed" transform="translate(231 118) scale(.48)"><use href="#cube"/></g>
+        <g fill="#fff" opacity=".88"><rect x="120" y="190" width="5" height="5"/><rect x="380" y="205" width="7" height="7"/><rect x="405" y="278" width="4" height="4"/><rect x="118" y="330" width="3" height="3"/><rect x="365" y="365" width="5" height="5"/><rect x="160" y="405" width="6" height="6"/></g>
+      </svg>
+      <div class="core-caption"><span>CORE / IDENTITY OBJECT</span><small>Scroll moves depth — not decoration.</small></div>
+    </div>
+    <div class="hero__projects"><span>SELECTED PROJECTS</span><b>LOTTO LAB</b><b>ORBIT</b><b>EARNBOXING</b><b>AI DECISION ROOM</b><i>SCROLL ↓</i></div>
+  </div>
+</section>
+
+<section id="work" class="work-section section-dark">
+  <div class="work-sticky"><div class="work-shell content-shell">
+    <div class="work-heading"><p class="eyebrow">SELECTED WORK</p><h2>WORK THAT<br>PROVES THE RANGE.</h2><p class="section-lead">Mobile Application · Web Platform · Mini App · Enterprise SaaS</p></div>
+    <div class="orbit-desktop">
+      <div class="orbit-stage"><div class="orbit-halo"></div><div class="orbit-ring orbit-ring--outer"></div><div class="orbit-ring orbit-ring--inner"></div><div class="orbit-core"><span></span></div><div id="orbitNodes"></div></div>
+      <article class="project-detail" id="projectDetail"></article>
+    </div>
+    <div class="orbit-progress"><span>SCROLL CONTROLS ORBIT</span><div class="orbit-progress__track"><i id="progressFill"></i></div><b id="progressIndex">01</b><em>04</em></div>
+    <div class="projects-mobile" id="projectsMobile"></div>
+  </div></div>
+</section>
+
+<section id="capabilities" class="capabilities section-dark"><div class="content-shell">
+  <p class="eyebrow">CAPABILITIES</p><div class="section-intro"><h2>WE DESIGN THE SYSTEM,<br>NOT JUST THE SCREEN.</h2><p>웹 에이전시의 역할을 페이지 제작으로 좁히지 않습니다. 서비스 구조와 사용자 흐름, 개발 구조와 운영까지 하나의 제품으로 연결합니다.</p></div>
+  <div class="capability-list"><a href="#contact" class="capability-row"><span class="capability-row__index">01</span><strong>PRODUCT & UX</strong><p>서비스 구조 · 사용자 흐름 · 화면 설계</p><small>IA / UX / PROTOTYPE</small><i>↗</i></a><a href="#contact" class="capability-row"><span class="capability-row__index">02</span><strong>WEB DEVELOPMENT</strong><p>브랜드 웹 · 플랫폼 · 관리자 · API</p><small>FRONTEND / BACKEND</small><i>↗</i></a><a href="#contact" class="capability-row"><span class="capability-row__index">03</span><strong>APP & MINI APP</strong><p>Android · Cross-platform · Apps-in-Toss</p><small>MOBILE / INTEGRATION</small><i>↗</i></a><a href="#contact" class="capability-row"><span class="capability-row__index">04</span><strong>SAAS & SYSTEM</strong><p>기업용 SaaS · 실시간 · AI 연동</p><small>ARCHITECTURE / OPS</small><i>↗</i></a></div>
+</div></section>
+
+<section class="process section-dark"><div class="content-shell"><p class="eyebrow">HOW WE BUILD</p><div class="section-intro"><h2>CLEAR PROCESS.<br>FEWER SURPRISES.</h2><p>효과보다 구조를 먼저 정하고, 실제 개발 조건을 확인한 뒤 화면을 확정합니다.</p></div><div class="process-grid"><article><span>01</span><h3>DISCOVER</h3><p>기능 요구를 사용자 목표·운영 조건·기술 제약으로 다시 정리합니다.</p></article><article><span>02</span><h3>DESIGN</h3><p>정보구조와 인터랙션을 먼저 검증하고 화면을 확정합니다.</p></article><article><span>03</span><h3>BUILD & SHIP</h3><p>프론트·백엔드·배포를 연결해 실제 환경에서 검증합니다.</p></article></div></div></section>
+
+<section id="studio" class="studio section-dark"><div class="content-shell studio__grid"><div><p class="eyebrow">STUDIO PRINCIPLE</p><h2>SMALL TEAM.<br>DEEP OWNERSHIP.</h2><p class="studio__lead">많은 프로젝트를 동시에 처리하기보다, 요구사항과 범위를 명확히 정리하고 제품 완성도에 집중합니다. 디자인·개발·운영이 분리되지 않도록 하나의 흐름으로 관리합니다.</p></div><dl class="studio__facts"><div><dt>FOCUS</dt><dd>WEB · APP · SAAS</dd></div><div><dt>PROCESS</dt><dd>UIUX → DEVELOP → DEPLOY</dd></div><div><dt>QUALITY</dt><dd>RESPONSIVE · ACCESSIBLE · MAINTAINABLE</dd></div></dl></div></section>
+
+<section id="contact" class="contact section-dark"><div class="content-shell contact__grid"><div class="contact__copy"><p class="eyebrow">START A PROJECT</p><h2>HAVE SOMETHING<br>WORTH BUILDING?</h2><p>웹사이트, 앱, 플랫폼 또는 SaaS가 필요하다면 현재 아이디어와 준비 상태를 알려주세요. 기능·예산·일정에 맞는 현실적인 제작 범위를 함께 정리합니다.</p><a class="text-link text-link--large" href="mailto:hello@pixground.com">START A PROJECT <span>↗</span></a></div><div class="portal-wrap"><img src="assets/portal.webp" alt="PIXGROUND 프로젝트 시작을 상징하는 네온 포털"><span>INDEPENDENT PORTAL ASSET</span></div></div></section>
+</main>
+<footer class="site-footer section-dark"><div class="content-shell"><strong>PIXGROUND</strong><span>Web · App · Platform · SaaS</span><nav><a href="#work">WORK</a><a href="#capabilities">CAPABILITIES</a><a href="#contact">CONTACT</a></nav></div></footer>
+<script src="app.js"></script>
+</body></html>
