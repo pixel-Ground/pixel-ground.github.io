@@ -1655,24 +1655,28 @@ onBeforeUnmount(() => {
   max-width: 560px
 ) {
   .media-stage {
-    height:
-      clamp(
-        600px,
-        calc(
-          var(--device-vh, 100svh) -
-          56px
-        ),
-        720px
-      );
+    /*
+     * 모바일 브라우저의 주소창 높이 변화에 맞춰 카드를 고정하면
+     * 하단 CTA와 기기 이미지가 잘릴 수 있다. 화면 높이 대신 카드 폭을
+     * 기준으로 충분한 작업 영역을 확보한다.
+     */
+    height: clamp(660px, 205vw, 760px);
+    min-height: 0;
+  }
 
-    min-height: 600px;
+  .app-fan,
+  .browser-fan {
+    inset:
+      78px
+      8px
+      148px;
   }
 
   .phone-device {
     width:
       min(
-        45vw,
-        170px
+        40vw,
+        160px
       );
   }
 
@@ -1707,7 +1711,7 @@ onBeforeUnmount(() => {
   max-width: 380px
 ) {
   .media-stage {
-    min-height: 580px;
+    height: max(660px, 205vw);
   }
 
   .media-stage__header {

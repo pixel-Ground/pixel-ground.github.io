@@ -723,6 +723,21 @@ onBeforeUnmount(() => {
 @media (
   max-width: 900px
 ) {
+  .hero,
+  .hero__inner {
+    min-height: auto;
+  }
+
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+
+    padding-top:
+      max(104px, 15svh);
+
+    padding-bottom: 30px;
+  }
+
   .hero__core-slot {
     position: relative;
 
@@ -732,17 +747,25 @@ onBeforeUnmount(() => {
     width: 100%;
     height:
       clamp(
-        280px,
-        min(82vw, 42svh),
-        360px
+        210px,
+        58vw,
+        280px
       );
 
     transform: none;
 
     margin:
-      clamp(20px, 5svh, 36px)
+      24px
       auto
-      8px;
+      16px;
+  }
+
+  .hero__projects {
+    position: relative;
+    inset: auto;
+
+    margin-top: 0;
+    padding-top: 18px;
   }
 }
 
@@ -752,9 +775,9 @@ onBeforeUnmount(() => {
   .hero__core-slot {
     height:
       clamp(
-        260px,
-        min(84vw, 40svh),
-        330px
+        200px,
+        56vw,
+        250px
       );
   }
 }
