@@ -730,13 +730,19 @@ onBeforeUnmount(() => {
     top: auto;
 
     width: 100%;
-    height: 390px;
+    height:
+      clamp(
+        280px,
+        min(82vw, 42svh),
+        360px
+      );
 
     transform: none;
 
     margin:
-      36px auto
-      12px;
+      clamp(20px, 5svh, 36px)
+      auto
+      8px;
   }
 }
 
@@ -744,7 +750,29 @@ onBeforeUnmount(() => {
   max-width: 560px
 ) {
   .hero__core-slot {
-    height: 330px;
+    height:
+      clamp(
+        260px,
+        min(84vw, 40svh),
+        330px
+      );
+  }
+}
+
+@media (
+  max-width: 900px
+) and (
+  max-height: 700px
+) {
+  .hero__core-slot {
+    height:
+      clamp(
+        250px,
+        min(78vw, 36svh),
+        310px
+      );
+
+    margin-top: 20px;
   }
 }
 </style>

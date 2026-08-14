@@ -2,6 +2,7 @@
 import {
   computed,
   onBeforeUnmount,
+  onMounted,
   ref,
   watch
 } from 'vue'
@@ -24,6 +25,16 @@ const props = defineProps({
 })
 
 const lightbox = ref(null)
+const viewport = ref({
+  width:
+    typeof window === 'undefined'
+      ? 1280
+      : window.innerWidth,
+  height:
+    typeof window === 'undefined'
+      ? 800
+      : window.innerHeight
+})
 
 const clamp = (value, min = 0, max = 1) =>
   Math.min(max, Math.max(min, value))
@@ -38,6 +49,46 @@ const p = computed(() =>
     clamp(props.progress)
   )
 )
+
+const phoneSpread = computed(() =>
+  viewport.value.width <= 560
+    ? clamp(
+        viewport.value.width * .34,
+        102,
+        148
+      )
+    : 168
+)
+
+const browserSideSpread = computed(() =>
+  viewport.value.width <= 560
+    ? clamp(
+        viewport.value.width * .4,
+        120,
+        168
+      )
+    : 225
+)
+
+const stageViewportStyle = computed(() => ({
+  '--device-vw':
+    `${viewport.value.width}px`,
+  '--device-vh':
+    `${viewport.value.height}px`
+}))
+
+function updateViewport() {
+  const visual = window.visualViewport
+
+  viewport.value = {
+    width:
+      visual?.width ||
+      window.innerWidth,
+    height:
+      visual?.height ||
+      window.innerHeight
+  }
+}
 
 /*
  * MEDIA / LOGO cross-fade
@@ -211,7 +262,7 @@ const logoStyle = computed(() => {
 const phoneLeftStyle = computed(() => ({
   transform:
     `translate(-50%, -50%) ` +
-    `translateX(${-168 * p.value}px) ` +
+    `translateX(${-phoneSpread.value * p.value}px) ` +
     `translateY(${-8 * p.value}px) ` +
     `rotate(${-10 * p.value}deg) ` +
     `scale(${0.90 + 0.10 * p.value})`,
@@ -228,7 +279,7 @@ const phoneLeftStyle = computed(() => ({
 const phoneRightStyle = computed(() => ({
   transform:
     `translate(-50%, -50%) ` +
-    `translateX(${168 * p.value}px) ` +
+    `translateX(${phoneSpread.value * p.value}px) ` +
     `translateY(${-8 * p.value}px) ` +
     `rotate(${10 * p.value}deg) ` +
     `scale(${0.90 + 0.10 * p.value})`,
@@ -260,7 +311,7 @@ const browserStyle = computed(() => ({
 const browserSideStyle = computed(() => ({
   transform:
     `translate(-50%, -50%) ` +
-    `translateX(${225 * p.value}px) ` +
+    `translateX(${browserSideSpread.value * p.value}px) ` +
     `translateY(${58 * p.value}px) ` +
     `rotate(${7 * p.value}deg) ` +
     `scale(${0.56 + 0.18 * p.value})`,
@@ -329,6 +380,20 @@ watch(
   }
 )
 
+onMounted(() => {
+  updateViewport()
+
+  window.addEventListener(
+    'resize',
+    updateViewport
+  )
+
+  window.visualViewport?.addEventListener(
+    'resize',
+    updateViewport
+  )
+})
+
 onBeforeUnmount(() => {
   document
     .documentElement
@@ -341,6 +406,16 @@ onBeforeUnmount(() => {
     'keydown',
     onKeydown
   )
+
+  window.removeEventListener(
+    'resize',
+    updateViewport
+  )
+
+  window.visualViewport?.removeEventListener(
+    'resize',
+    updateViewport
+  )
 })
 </script>
 
@@ -348,6 +423,7 @@ onBeforeUnmount(() => {
   <article
     v-if="project"
     class="media-stage"
+    :style="stageViewportStyle"
     :class="[
       `media-stage--${kind}`,
       {
@@ -1507,7 +1583,16 @@ onBeforeUnmount(() => {
   max-width: 900px
 ) {
   .media-stage {
-    height: 620px;
+    height:
+      clamp(
+        620px,
+        calc(
+          var(--device-vh, 100svh) -
+          72px
+        ),
+        780px
+      );
+
     min-height: 620px;
 
     border-radius: 22px;
@@ -1516,9 +1601,9 @@ onBeforeUnmount(() => {
   .app-fan,
   .browser-fan {
     inset:
-      70px
+      76px
       8px
-      128px;
+      122px;
   }
 
   .phone-device {
@@ -1538,13 +1623,31 @@ onBeforeUnmount(() => {
   }
 
   .media-stage__copy {
-    display: block;
+    display: flex;
+
+    align-items: flex-end;
+    justify-content: space-between;
+
+    gap: 14px;
+  }
+
+  .media-stage__copy p {
+    flex: 1 1 auto;
+
+    margin: 0;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .media-stage__copy > span {
+    display: none;
   }
 
   .media-stage__copy a {
-    display: inline-block;
+    flex: 0 0 auto;
 
-    margin-top: 14px;
+    margin-top: 0;
   }
 }
 
@@ -1552,8 +1655,17 @@ onBeforeUnmount(() => {
   max-width: 560px
 ) {
   .media-stage {
-    height: 560px;
-    min-height: 560px;
+    height:
+      clamp(
+        600px,
+        calc(
+          var(--device-vh, 100svh) -
+          56px
+        ),
+        720px
+      );
+
+    min-height: 600px;
   }
 
   .phone-device {
@@ -1566,6 +1678,45 @@ onBeforeUnmount(() => {
 
   .media-logo {
     width: 105px;
+  }
+
+  .media-stage__copy {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .media-stage__copy p {
+    max-width: 100%;
+
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  .media-stage__cta--play-store {
+    min-width: 168px;
+    min-height: 52px;
+  }
+}
+
+@media (
+  max-width: 380px
+) {
+  .media-stage {
+    min-height: 580px;
+  }
+
+  .media-stage__header {
+    left: 18px;
+    right: 18px;
+  }
+
+  .media-stage__header h2 {
+    font-size: 22px;
   }
 }
 </style>

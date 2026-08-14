@@ -292,6 +292,28 @@ function selectMobile(index) {
   mobileIndex.value = index
 }
 
+function focusProject(index) {
+  if (windowWidth.value <= 900) {
+    selectMobile(index)
+    sectionRef.value?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
+    return
+  }
+
+  if (!trigger) return
+
+  const segmentSize =
+    (trigger.end - trigger.start) /
+    projectCount.value
+
+  window.scrollTo({
+    top: trigger.start + segmentSize * (index + 0.58),
+    behavior: 'smooth'
+  })
+}
+
 onMounted(async () => {
   gsap.registerPlugin(
     ScrollTrigger
@@ -479,6 +501,7 @@ onBeforeUnmount(() => {
               index === activeIndex
           }"
           :style="planetStyle(index)"
+          @click="focusProject(index)"
           type="button"
           :aria-label="`${project.name} 프로젝트`"
         >
@@ -530,7 +553,7 @@ onBeforeUnmount(() => {
             'is-active':
               index === activeIndex
           }"
-          @click="selectMobile(index)"
+          @click="focusProject(index)"
         >
           <span>
             <img
@@ -935,9 +958,9 @@ onBeforeUnmount(() => {
     opacity .18s linear,
     transform .18s linear;
 
-  cursor: default;
+  cursor: pointer;
 
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .orbit-planet__halo {
@@ -1150,13 +1173,21 @@ onBeforeUnmount(() => {
   max-width: 900px
 ) {
   .orbital-work {
+    --mobile-gutter:
+      clamp(16px, 4.5vw, 24px);
+
     min-height: auto;
 
     overflow: visible;
 
     padding:
-      26px 18px
+      clamp(20px, 4svh, 28px)
+      var(--mobile-gutter)
       54px;
+  }
+
+  .orbital-work__header {
+    min-height: 64px;
   }
 
   .orbital-work__phase {
@@ -1183,11 +1214,21 @@ onBeforeUnmount(() => {
     overflow-x: auto;
 
     margin:
-      6px -18px
+      6px
+      calc(
+        var(--mobile-gutter) * -1
+      )
       30px;
 
     padding:
-      12px 18px;
+      12px
+      var(--mobile-gutter);
+
+    scroll-padding-inline:
+      var(--mobile-gutter);
+
+    overscroll-behavior-inline:
+      contain;
 
     scrollbar-width: none;
   }
@@ -1205,7 +1246,12 @@ onBeforeUnmount(() => {
 
     gap: 10px;
 
-    min-width: 160px;
+    min-width:
+      clamp(
+        144px,
+        42vw,
+        160px
+      );
 
     padding: 10px 12px;
 
@@ -1287,7 +1333,7 @@ onBeforeUnmount(() => {
 
     font:
       700
-      clamp(40px, 11vw, 62px)
+      clamp(38px, 10.5vw, 56px)
       /.95
       "Space Grotesk",
       sans-serif;
@@ -1303,8 +1349,12 @@ onBeforeUnmount(() => {
 
     color: #7d8ea7;
 
+    overflow-wrap: anywhere;
+
     font:
-      400 13px/1.7
+      400
+      clamp(13px, 3.5vw, 15px)
+      /1.72
       "Noto Sans KR",
       sans-serif;
   }

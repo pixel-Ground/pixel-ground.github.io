@@ -211,17 +211,18 @@ body::before {
 
 @media (max-width: 900px) {
   :root { --shell: calc(100vw - 40px); }
+  [id] { scroll-margin-top: 74px; }
   .site-header { height: 66px; padding-inline: 20px; }
   .desktop-nav { display: none; }
   .mobile-menu-button { display: block; color: var(--pg-text); background: none; border: 0; padding: 10px 0; }
   .mobile-menu { display: grid; position: fixed; z-index: 72; top: 66px; left: 0; right: 0; padding: 30px 20px 42px; background: rgba(4,7,13,.97); border-top: 1px solid var(--pg-line); border-bottom: 1px solid var(--pg-line); }
   .mobile-menu a { padding: 16px 0; font-family: var(--display); font-size: 18px; border-bottom: 1px solid rgba(27,42,70,.5); }
-  .hero, .hero__inner { min-height: 920px; }
-  .hero__inner { padding-top: 120px; }
+  .hero, .hero__inner { min-height: max(860px, 100svh); }
+  .hero__inner { padding-top: clamp(96px, 14svh, 120px); padding-bottom: 94px; }
   .hero__copy { width: 100%; }
-  .hero h1 { font-size: clamp(50px, 13vw, 66px); line-height: .96; }
-  .hero__lead { font-size: 15px; line-height: 1.85; }
-  .hero__actions { margin-top: 34px; gap: 22px; flex-wrap: wrap; }
+  .hero h1 { font-size: clamp(42px, 12.2vw, 60px); line-height: .96; }
+  .hero__lead { font-size: clamp(14px, 3.8vw, 15px); line-height: 1.8; }
+  .hero__actions { margin-top: clamp(28px, 5svh, 34px); gap: 22px; flex-wrap: wrap; }
   .core-visual { top: 490px; right: 50%; transform: translateX(50%); width: 390px; height: 350px; opacity: 1; }
   .core-depth--outer { width: 330px; height: 330px; right: 30px; top: 2px; }
   .core-depth--inner { width: 230px; height: 230px; right: 80px; top: 52px; }
@@ -260,6 +261,18 @@ body::before {
   .portal-wrap img { width: min(640px, 120vw); }
   .site-footer .content-shell { grid-template-columns: 1fr; gap: 10px; }
   .site-footer nav { margin-top: 16px; flex-wrap: wrap; }
+}
+
+@media (max-width: 380px) {
+  :root { --shell: calc(100vw - 32px); }
+  .site-header { padding-inline: 16px; }
+  .brand { font-size: 10px; letter-spacing: .08em; }
+  .hero h1 { font-size: clamp(40px, 12vw, 46px); }
+  .hero__lead span { display: inline; }
+  .hero__lead span + span::before { content: ' '; }
+  .hero__actions { align-items: stretch; flex-direction: column; gap: 18px; }
+  .quiet-link, .text-link { width: 100%; }
+  .section-intro h2, .studio h2, .contact h2 { font-size: clamp(38px, 12vw, 44px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
