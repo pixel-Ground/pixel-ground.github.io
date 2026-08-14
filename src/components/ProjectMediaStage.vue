@@ -98,6 +98,23 @@ const kind = computed(() =>
   inferKind(props.project)
 )
 
+const projectLink = computed(() =>
+  props.project?.url ||
+  props.project?.href ||
+  ''
+)
+
+const isGooglePlayLink = computed(() =>
+  /play\.google\.com/i.test(
+    projectLink.value
+  )
+)
+
+const projectLinkLabel = computed(() =>
+  props.project?.cta ||
+  'VIEW PROJECT'
+)
+
 const media = computed(() => {
   const project = props.project
 
@@ -591,12 +608,59 @@ onBeforeUnmount(() => {
       </span>
 
       <a
-        v-if="project.href"
-        :href="project.href"
+        v-if="projectLink"
+        :class="[
+          'media-stage__cta',
+          {
+            'media-stage__cta--play-store':
+              isGooglePlayLink
+          }
+        ]"
+        :href="projectLink"
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
+        :aria-label="
+          isGooglePlayLink
+            ? `${project.name} Google Play 다운로드`
+            : `${project.name} 프로젝트로 이동`
+        "
       >
-        VIEW PROJECT ↗
+        <template v-if="isGooglePlayLink">
+          <svg
+            class="media-stage__play-icon"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+            <path
+              fill="#00d9ff"
+              d="M3.2 2.1 14.5 12 3.2 21.9c-.3-.4-.5-.9-.5-1.5V3.6c0-.6.2-1.1.5-1.5Z"
+            />
+            <path
+              fill="#00ef78"
+              d="m3.2 2.1 13.4 7.6-2.1 2.3L3.2 2.1Z"
+            />
+            <path
+              fill="#ffd629"
+              d="m14.5 12 2.1 2.3-13.4 7.6L14.5 12Z"
+            />
+            <path
+              fill="#ff4057"
+              d="m16.6 9.7 3.1 1.8c.8.4.8.7 0 1.1l-3.1 1.8-2.1-2.4 2.1-2.3Z"
+            />
+          </svg>
+
+          <span>
+            <small>다운로드</small>
+            <strong>Google Play</strong>
+          </span>
+        </template>
+
+        <template v-else>
+          <span>
+            {{ projectLinkLabel }}
+          </span>
+          <b aria-hidden="true">↗</b>
+        </template>
       </a>
     </div>
 
@@ -1193,29 +1257,141 @@ onBeforeUnmount(() => {
     sans-serif;
 }
 
-.media-stage__copy a {
+.media-stage__cta {
   grid-column: 2;
   grid-row:
     1 / span 2;
 
   align-self: end;
 
-  padding-bottom: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 
-  border-bottom:
+  min-height: 42px;
+
+  gap: 10px;
+
+  padding: 11px 15px;
+
+  border:
     1px solid
-    rgba(82, 132, 207, .35);
+    rgba(96, 158, 255, .55);
+
+  border-radius: 11px;
+
+  background:
+    rgba(9, 24, 48, .78);
 
   color: #fff;
 
   font:
-    700 10px/1.2
+    700 11px/1
     "Space Grotesk",
     sans-serif;
+
+  letter-spacing: .04em;
+
+  white-space: nowrap;
 
   text-decoration: none;
 
   pointer-events: auto;
+
+  box-shadow:
+    0 10px 28px
+    rgba(0, 0, 0, .22);
+
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    background .2s ease;
+}
+
+.media-stage__cta:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(85, 220, 255, .85);
+
+  background:
+    rgba(15, 40, 76, .92);
+}
+
+.media-stage__cta:focus-visible {
+  outline:
+    2px solid
+    #55dcff;
+
+  outline-offset: 3px;
+}
+
+.media-stage__cta b {
+  font-size: 15px;
+}
+
+.media-stage__cta--play-store {
+  min-width: 178px;
+  min-height: 56px;
+
+  justify-content: flex-start;
+
+  gap: 11px;
+
+  padding: 8px 15px 8px 11px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, .72);
+
+  border-radius: 13px;
+
+  background: #050505;
+
+  letter-spacing: 0;
+
+  box-shadow:
+    0 12px 30px
+    rgba(0, 0, 0, .35),
+    inset 0 0 0 1px
+    rgba(255, 255, 255, .07);
+}
+
+.media-stage__cta--play-store:hover {
+  border-color: #fff;
+
+  background: #111;
+}
+
+.media-stage__play-icon {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 auto;
+}
+
+.media-stage__cta--play-store > span {
+  display: grid;
+
+  gap: 2px;
+
+  text-align: left;
+}
+
+.media-stage__cta--play-store small {
+  font:
+    500 9px/1
+    "Noto Sans KR",
+    sans-serif;
+}
+
+.media-stage__cta--play-store strong {
+  font:
+    600 18px/1
+    "Space Grotesk",
+    sans-serif;
+
+  letter-spacing: -.025em;
 }
 
 /* LIGHTBOX */

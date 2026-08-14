@@ -8,9 +8,9 @@
     <a
       class="brand"
       href="#top"
-      aria-label="PIXGROUND 홈"
+      :aria-label="site.brandAria"
     >
-      PIXGROUND
+      {{ site.brand }}
     </a>
 
     <nav
@@ -19,7 +19,7 @@
     >
       <a href="#work">WORK</a>
       <a href="#capabilities">CAPABILITIES</a>
-      <a href="#studio">STUDIO</a>
+      <a href="#studio">{{ site.studioNav }}</a>
       <a href="#contact">CONTACT</a>
     </nav>
 
@@ -54,7 +54,7 @@
         href="#studio"
         @click="menuOpen = false"
       >
-        STUDIO
+        {{ site.studioNav }}
       </a>
 
       <a
@@ -87,9 +87,12 @@
           </h1>
 
           <p class="hero__lead">
-            픽스그라운드는 아이디어를 화면으로만 만드는 것이 아니라,
-            사용자 흐름과 시스템 구조를 함께 설계해 실제로 운영 가능한
-            제품으로 완성합니다.
+            <span
+              v-for="line in site.heroLines"
+              :key="line"
+            >
+              {{ line }}
+            </span>
           </p>
 
           <div class="hero__actions">
@@ -105,7 +108,7 @@
               href="#contact"
               class="quiet-link"
             >
-              프로젝트 상담
+              {{ site.secondaryCta }}
               <span>↗</span>
             </a>
           </div>
@@ -165,14 +168,12 @@
 
         <div class="section-intro">
           <h2>
-            WE DESIGN THE SYSTEM,<br />
-            NOT JUST THE SCREEN.
+            {{ site.capabilityHeading[0] }}<br />
+            {{ site.capabilityHeading[1] }}
           </h2>
 
           <p>
-            웹 에이전시의 역할을 페이지 제작으로 좁히지 않습니다.
-            서비스 구조와 사용자 흐름, 개발 구조와 운영까지
-            하나의 제품으로 연결합니다.
+            {{ site.capabilityIntro }}
           </p>
         </div>
 
@@ -213,7 +214,7 @@
     >
       <div class="content-shell">
         <p class="eyebrow">
-          HOW WE BUILD
+          {{ site.processEyebrow }}
         </p>
 
         <div
@@ -269,18 +270,16 @@
       >
         <div>
           <p class="eyebrow">
-            STUDIO PRINCIPLE
+            {{ site.studioEyebrow }}
           </p>
 
           <h2>
-            SMALL TEAM.<br />
-            DEEP OWNERSHIP.
+            {{ site.studioHeading[0] }}<br />
+            {{ site.studioHeading[1] }}
           </h2>
 
           <p class="studio__lead">
-            많은 프로젝트를 동시에 처리하기보다,
-            요구사항과 범위를 명확히 정리하고 제품 완성도에 집중합니다.
-            디자인·개발·운영이 분리되지 않도록 하나의 흐름으로 관리합니다.
+            {{ site.studioLead }}
           </p>
         </div>
 
@@ -324,18 +323,16 @@
       >
         <div class="contact__copy">
           <p class="eyebrow">
-            START A PROJECT
+            {{ site.contactEyebrow }}
           </p>
 
           <h2>
-            HAVE SOMETHING<br />
-            WORTH BUILDING?
+            {{ site.contactHeading[0] }}<br />
+            {{ site.contactHeading[1] }}
           </h2>
 
           <p>
-            웹사이트, 앱, 플랫폼 또는 SaaS가 필요하다면
-            현재 아이디어와 준비 상태를 알려주세요.
-            기능·예산·일정에 맞는 현실적인 제작 범위를 함께 정리합니다.
+            {{ site.contactDescription }}
           </p>
 
           <a
@@ -343,17 +340,32 @@
               text-link
               text-link--large
             "
-            href="mailto:hello@pixground.com"
+            :href="`mailto:${contactEmail}`"
           >
-            START A PROJECT
+            {{ site.contactCta }}
             <span>↗</span>
           </a>
+
+          <div class="contact__email-fallback">
+            <span>또는</span>
+
+            <strong>{{ contactEmail }}</strong>
+
+            <button
+              type="button"
+              :aria-label="`${contactEmail} 이메일 주소 복사`"
+              :aria-live="emailCopied ? 'polite' : 'off'"
+              @click="copyEmail"
+            >
+              {{ emailCopied ? '복사 완료' : '주소 복사' }}
+            </button>
+          </div>
         </div>
 
         <div class="portal-wrap">
           <img
             :src="portal"
-            alt="PIXGROUND의 프로젝트 시작을 상징하는 네온 포털"
+            :alt="site.portalAlt"
             loading="lazy"
           />
 
@@ -372,7 +384,7 @@
     "
   >
     <div class="content-shell">
-      <strong>PIXGROUND</strong>
+      <strong>{{ site.footerBrand }}</strong>
 
       <span>
         Web · App · Platform · SaaS
@@ -421,13 +433,47 @@ import {
   projects
 } from './data/projects'
 
+import {
+  currentSiteCopy as site
+} from './data/siteMode'
+
 import portal
   from './assets/portal.webp'
 
 const scrolled = ref(false)
 const menuOpen = ref(false)
+const emailCopied = ref(false)
+const contactEmail = 'kefa5494@gmail.com'
 
 let mm
+let emailCopyTimer
+
+async function copyEmail() {
+  try {
+    await navigator.clipboard.writeText(
+      contactEmail
+    )
+  } catch {
+    const textarea = document.createElement(
+      'textarea'
+    )
+
+    textarea.value = contactEmail
+    textarea.setAttribute('readonly', '')
+    textarea.style.position = 'fixed'
+    textarea.style.opacity = '0'
+    document.body.appendChild(textarea)
+    textarea.select()
+    document.execCommand('copy')
+    textarea.remove()
+  }
+
+  emailCopied.value = true
+  window.clearTimeout(emailCopyTimer)
+  emailCopyTimer = window.setTimeout(() => {
+    emailCopied.value = false
+  }, 1800)
+}
 
 const capabilities = [
   {
@@ -591,6 +637,8 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  window.clearTimeout(emailCopyTimer)
+
   window.removeEventListener(
     'scroll',
     onScroll
